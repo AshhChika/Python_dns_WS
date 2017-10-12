@@ -9,25 +9,25 @@ import matplotlib.pyplot as plt
 
 
 iter_max = 100
-delta_x=0.01
+delta_x = 0.01
 
 xL0, xR0  = -10, 10
 
-E=1.5
+E = 1.5
 
-eps_E=0.01
-#nn=4
+eps_E = 0.01
+#nn = 4
 
-hbar=1
-omega=1
-m_elec=0.5
+hbar = 1
+omega = 1
+m_elec = 0.5
 
 def calc_match_pos_osci(E):
     xa =np.sqrt(2*E/(m_elec*(omega**2)))# 転回点
     return xa
 
 xa = calc_match_pos_osci(E) # 転回点
-print("xa=",xa)
+print("xa = ",xa)
 #xL0, xR0  = -nn*xa, nn*xa
 
 
@@ -44,8 +44,8 @@ uL = np.zeros([nL],float)
 uR = np.zeros([nR],float)
 
 print("E= ",E)
-print("xL0,xR0, i_match, delta_x=",xL0,xR0, i_match, delta_x)
-print("Nx, nL,nR=",Nx, nL,nR)
+print("xL0,xR0, i_match, delta_x = ",xL0,xR0, i_match, delta_x)
+print("Nx, nL,nR = ",Nx, nL,nR)
 
 
 
@@ -89,15 +89,15 @@ def Numerov (N,delta_x,k2,u):  # ヌメロフ法による計算
         u[i+1] = (2*u[i]*(1-5*b*k2[i])-(1+b*k2[i-1])*u[i-1])/(1+b*k2[i+1])
 
 
-xL=np.zeros([Nx])
-xR=np.zeros([Nx])
+xL = np.zeros([Nx])
+xR = np.zeros([Nx])
 
 for i in range (Nx):
     xL[i] = xL0 + i*delta_x
     xR[i] = xR0 - i*delta_x
 
-k2L=np.zeros([Nx+1])
-k2R=np.zeros([Nx+1])
+k2L = np.zeros([Nx+1])
+k2R = np.zeros([Nx+1])
 
 setk2(E)
 
@@ -105,7 +105,7 @@ setk2(E)
 
 def E_eval(): # 評価関数: 式(9)を参照
 #    print("in E_eval")
-#    print("delta_x=",delta_x)
+#    print("delta_x = ",delta_x)
 
     if uL[-1]*uR[-1] >0 : # 符号が違うと偶然logderiが一致してしまうときがあるので，同符号という条件をつける (固有値をみつけるだけなら関係ない)
 
@@ -114,7 +114,7 @@ def E_eval(): # 評価関数: 式(9)を参照
 
         logderi_L=  uLdash/uL[-1]
         logderi_R=  uRdash/uR[-1]
-   #     print("logderi_L, R=",logderi_L,logderi_R)
+   #     print("logderi_L, R = ",logderi_L,logderi_R)
 
         return (logderi_L- logderi_R)/(logderi_L+logderi_R) #式(9)
     else:
@@ -127,13 +127,13 @@ def E_eval(): # 評価関数: 式(9)を参照
 
 # ポテンシャル関数のプロット
 XXX= np.linspace(xL0,xR0, Nx)
-POT=np.zeros([Nx])
+POT = np.zeros([Nx])
 for i in range(Nx):
     POT[i] = V(xL0 + i*delta_x)
 plt.xlabel('X (Bohr)') # ｘ軸のラベル
 plt.ylabel('V (X) (Ry)') # y軸のラベル
-plt.hlines([E], xL0,xR0, linestyles="dashed")  #Energy
-plt.plot(XXX,POT,'-',color='blue')
+plt.hlines([E], xL0,xR0, linestyles = "dashed")  #Energy
+plt.plot(XXX,POT,'-',color = 'blue')
 plt.show()
 #
 
@@ -151,17 +151,17 @@ def normarize_func(u):
     factor = ((xR0-xL0)/Nx)*(np.sum(u[1:-2]**2))
     return factor
 def plot_eigenfunc(color_name):
-    uuu=np.concatenate([uL[0:nL-2],uR[::-1]],axis=0)
-    XX=np.linspace(xL0,xR0, len(uuu))
+    uuu = np.concatenate([uL[0:nL-2],uR[::-1]],axis = 0)
+    XX = np.linspace(xL0,xR0, len(uuu))
 
-    factor=np.sqrt(normarize_func(uuu))
+    factor = np.sqrt(normarize_func(uuu))
  #   print("fcator = ",factor)
-    plt.plot(XX,uuu/factor,'-',color=color_name,label='Psi')
-    plt.plot(XX,(uuu/factor)**2,'-',color='red',label='| Psi |^2')
+    plt.plot(XX,uuu/factor,'-',color = color_name,label = 'Psi')
+    plt.plot(XX,(uuu/factor)**2,'-',color = 'red',label = '| Psi |^2')
 
     plt.xlabel('X (Bohr)') # ｘ軸のラベル
     plt.ylabel('') # y軸のラベル
-    plt.legend(loc='upper right')
+    plt.legend(loc = 'upper right')
     plt.show()
 
 
@@ -172,16 +172,16 @@ def plot_eigenfunc(color_name):
 # 解の探索
 
 # 境界条件1 (偶関数)
-EEmin=0.1
+EEmin = 0.1
 EEmax = 5
-delta_EE=0.01
+delta_EE = 0.01
 
 NE = int((EEmax-EEmin)/delta_EE)
-Elis=[]
-Solved_Eigenvalu=[]
+Elis = []
+Solved_Eigenvalu = []
 check_Elis= []
 for i in range(NE+1):
-    EE=EEmin+i*(EEmax-EEmin)/NE
+    EE = EEmin+i*(EEmax-EEmin)/NE
 
 
     xa = calc_match_pos_osci(EE) # 転回点
@@ -199,7 +199,7 @@ for i in range(NE+1):
     Numerov (nR,delta_x,k2R,uR)
 
     a1= E_eval()
-    #print ("a1=",a1)
+    #print ("a1 = ",a1)
     if a1 :  # a1がTrueのとき
         Elis.append(EE)
         check_Elis.append(a1)
@@ -208,26 +208,26 @@ for i in range(NE+1):
             Solved_Eigenvalu.append(EE)
             plot_eigenfunc("blue")
 
-plt.plot(Elis, check_Elis, 'o',markersize=3, color='blue',linewidth=1)
+plt.plot(Elis, check_Elis, 'o',markersize = 3, color = 'blue',linewidth = 1)
 plt.grid(True) #グラフの枠を作成
 plt.xlim(EEmin, EEmax) # 描くxの範囲を[xmin,xmax]にする
 plt.ylim(-10, 10) # 描くyの範囲を[ymin,ymax]にする
-plt.hlines([0], EEmin,EEmax, linestyles="dashed")  # y=y1とy2に破線を描く
+plt.hlines([0], EEmin,EEmax, linestyles = "dashed")  # y = y1とy2に破線を描く
 plt.xlabel('Energy (Ry)') # ｘ軸のラベル
 plt.ylabel('Delta_E_function') # y軸のラベル
 plt.show()
 
 # 境界条件2 (奇関数)
-EEmin=0.1
+EEmin = 0.1
 EEmax = 5
-delta_EE=0.01
+delta_EE = 0.01
 
 NE = int((EEmax-EEmin)/delta_EE)
-Elis=[]
-Solved_Eigenvalu=[]
+Elis = []
+Solved_Eigenvalu = []
 check_Elis= []
 for i in range(NE+1):
-    EE=EEmin+i*(EEmax-EEmin)/NE
+    EE = EEmin+i*(EEmax-EEmin)/NE
 
 
     xa = calc_match_pos_osci(EE) # 転回点
@@ -245,7 +245,7 @@ for i in range(NE+1):
     Numerov (nR,delta_x,k2R,uR)
 
     a1= E_eval()
-    #print ("a1=",a1)
+    #print ("a1 = ",a1)
     if a1 :  # a1がTrueのとき
         Elis.append(EE)
         check_Elis.append(a1)
@@ -255,11 +255,11 @@ for i in range(NE+1):
             plot_eigenfunc("blue")
 
 
-plt.plot(Elis, check_Elis, 'o',markersize=3, color='red',linewidth=1)
+plt.plot(Elis, check_Elis, 'o',markersize = 3, color = 'red',linewidth = 1)
 plt.grid(True) #グラフの枠を作成
 plt.xlim(EEmin, EEmax) # 描くxの範囲を[xmin,xmax]にする
 plt.ylim(-10, 10) # 描くyの範囲を[ymin,ymax]にする
-plt.hlines([0], EEmin,EEmax, linestyles="dashed")  # y=y1とy2に破線を描く
+plt.hlines([0], EEmin,EEmax, linestyles = "dashed")  # y = y1とy2に破線を描く
 plt.xlabel('Energy (Ry)') # ｘ軸のラベル
 plt.ylabel('Delta_E_function') # y軸のラベル
 plt.show()

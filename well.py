@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 delta_x = 0.05
 
-xa = 1 # 井戸の境界。 x=±xaに井戸の端がある。
+xa = 1 # 井戸の境界。 x = ±xaに井戸の端がある。
 eps_E = 0.005 # 収束条件
 nn = 5
 xL0, xR0  = - nn * xa, nn * xa
@@ -26,11 +26,11 @@ print(nL, nR)
 uL = np.zeros([nL],float)
 uR = np.zeros([nR],float)
 
-E=np.pi**2/4
+E = np.pi**2/4
 
 print("E= ",E)
-print("xL0,xR0, i_match, delta_x=",xL0,xR0, i_match, delta_x)
-print("Nx, nL,nR=",Nx, nL,nR)
+print("xL0,xR0, i_match, delta_x = ",xL0,xR0, i_match, delta_x)
+print("Nx, nL,nR = ",Nx, nL,nR)
 
 
 def V(x): # 井戸型ポテンシャルの設定
@@ -67,15 +67,15 @@ def Numerov (N,delta_x,k2,u):  # ヌメロフ法による発展
         u[i+1] = (2*u[i]*(1-5*b*k2[i])-(1+b*k2[i-1])*u[i-1])/(1+b*k2[i+1])
 
 
-xL=np.zeros([Nx])
-xR=np.zeros([Nx])
+xL = np.zeros([Nx])
+xR = np.zeros([Nx])
 
 for i in range (Nx):
     xL[i] = xL0 + i*delta_x
     xR[i] = xR0 - i*delta_x
 
-k2L=np.zeros([Nx+1])
-k2R=np.zeros([Nx+1])
+k2L = np.zeros([Nx+1])
+k2R = np.zeros([Nx+1])
 
 setk2(E)
 
@@ -94,13 +94,13 @@ def E_eval():
 
 # ポテンシャル関数のプロット
 XXX= np.linspace(xL0,xR0, Nx)
-POT=np.zeros([Nx])
+POT = np.zeros([Nx])
 for i in range(Nx):
     POT[i] = V(xL0 + i*delta_x)
 plt.xlabel('X (Bohr)') # ｘ軸のラベル
 plt.ylabel('V (X) (Ry)') # y軸のラベル
-plt.hlines([E], xL0,xR0, linestyles="dashed")  #Energy
-plt.plot(XXX,POT,'-',color='blue')
+plt.hlines([E], xL0,xR0, linestyles = "dashed")  #Energy
+plt.plot(XXX,POT,'-',color = 'blue')
 plt.show()
 #
 #k^2(x)のプロット
@@ -113,33 +113,33 @@ def normarize_func(u):
     factor = ((xR0-xL0)/Nx)*(np.sum(u[1:-2]**2))
     return factor
 def plot_eigenfunc(color_name):
-    uuu=np.concatenate([uL[0:nL-2],uR[::-1]],axis=0)
-    XX=np.linspace(xL0,xR0, len(uuu))
+    uuu = np.concatenate([uL[0:nL-2],uR[::-1]],axis = 0)
+    XX = np.linspace(xL0,xR0, len(uuu))
 
-    factor=np.sqrt(normarize_func(uuu))
+    factor = np.sqrt(normarize_func(uuu))
 
-    plt.plot(XX,uuu/factor,'-',color=color_name,label='Psi')
-    plt.plot(XX,(uuu/factor)**2,'-',color='red',label='| Psi |^2')
+    plt.plot(XX,uuu/factor,'-',color = color_name,label = 'Psi')
+    plt.plot(XX,(uuu/factor)**2,'-',color = 'red',label = '| Psi |^2')
 
     plt.xlabel('X (Bohr)') # ｘ軸のラベル
     plt.ylabel('') # y軸のラベル
-    plt.legend(loc='upper right')
+    plt.legend(loc = 'upper right')
     plt.show()
 
 
 # 解の探索
 
 # 境界条件1 (偶関数)
-EEmin=0.1
+EEmin = 0.1
 EEmax = 20
-delta_EE=0.01
+delta_EE = 0.01
 
 NE = int((EEmax-EEmin)/delta_EE)
-Elis=[]
-Solved_Eigenvalu=[]
+Elis = []
+Solved_Eigenvalu = []
 check_Elis= []
 for i in range(NE+1):
-    EE=EEmin+i*(EEmax-EEmin)/NE
+    EE = EEmin+i*(EEmax-EEmin)/NE
 
 
     set_condition_even()
@@ -158,26 +158,26 @@ for i in range(NE+1):
             Solved_Eigenvalu.append(EE)
             plot_eigenfunc("blue")
 
-plt.plot(Elis, check_Elis, 'o',markersize=3, color='blue',linewidth=1)
+plt.plot(Elis, check_Elis, 'o',markersize = 3, color = 'blue',linewidth = 1)
 plt.grid(True) #グラフの枠を作成
 plt.xlim(EEmin, EEmax) # 描くxの範囲を[xmin,xmax]にする
 plt.ylim(-10, 10) # 描くyの範囲を[ymin,ymax]にする
-plt.hlines([0], EEmin,EEmax, linestyles="dashed")  # y=y1とy2に破線を描く
+plt.hlines([0], EEmin,EEmax, linestyles = "dashed")  # y = y1とy2に破線を描く
 plt.xlabel('Energy (Ry)') # ｘ軸のラベル
 plt.ylabel('Delta_E_function') # y軸のラベル
 plt.show()
 
 # 境界条件2 (奇関数)
-EEmin=0.1
+EEmin = 0.1
 EEmax = 20
-delta_EE=0.01
+delta_EE = 0.01
 
 NE = int((EEmax-EEmin)/delta_EE)
-Elis=[]
-Solved_Eigenvalu=[]
+Elis = []
+Solved_Eigenvalu = []
 check_Elis= []
 for i in range(NE+1):
-    EE=EEmin+i*(EEmax-EEmin)/NE
+    EE = EEmin+i*(EEmax-EEmin)/NE
 
     nL = i_match
     nR = Nx-nL
@@ -192,7 +192,7 @@ for i in range(NE+1):
     Numerov (nR,delta_x,k2R,uR)
 
     a1= E_eval()
-    #print ("a1=",a1)
+    #print ("a1 = ",a1)
     if a1 :  # a1がTrueのとき
         Elis.append(EE)
         check_Elis.append(a1)
@@ -202,11 +202,11 @@ for i in range(NE+1):
             plot_eigenfunc("blue")
 
 
-plt.plot(Elis, check_Elis, 'o',markersize=3, color='red',linewidth=1)
+plt.plot(Elis, check_Elis, 'o',markersize = 3, color = 'red',linewidth = 1)
 plt.grid(True) #グラフの枠を作成
 plt.xlim(EEmin, EEmax) # 描くxの範囲を[xmin,xmax]にする
 plt.ylim(-10, 10) # 描くyの範囲を[ymin,ymax]にする
-plt.hlines([0], EEmin,EEmax, linestyles="dashed")  # y=y1とy2に破線を描く
+plt.hlines([0], EEmin,EEmax, linestyles = "dashed")  # y = y1とy2に破線を描く
 plt.xlabel('Energy (Ry)') # ｘ軸のラベル
 plt.ylabel('Delta_E_function') # y軸のラベル
 plt.show()
